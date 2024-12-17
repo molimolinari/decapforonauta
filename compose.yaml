@@ -1,0 +1,14 @@
+services:
+  gatsby:
+    build: .
+    container_name: gatsby
+    ports:
+      - "9200:8000"
+    volumes:
+      - gatsby:/app/src
+#      - flarum-files:/var/flarum
+#      - ./php.ini:/usr/local/etc/php/php.ini
+#    command: ["sh", "-c", "cp -r /tmp/flarum/* /var/flarum && php-fpm"]
+
+volumes:
+  gatsby:
