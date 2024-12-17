@@ -26,3 +26,5 @@ content:
     label: Home Page
     type: file
     path: src/pages/index.js
+    fields:
+      - {name: title, label: Title, type: string }
