@@ -22,7 +22,6 @@ content:
       - name: body
         label: Body
         type: rich-text
-content:
   - name: index
     label: Home Page
     type: file
