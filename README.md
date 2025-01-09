@@ -1,49 +1,101 @@
-<p align="center">
-  <a href="https://www.gatsbyjs.com/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter">
-    <img alt="Gatsby" src="https://www.gatsbyjs.com/Gatsby-Monogram.svg" width="60" />
-  </a>
-</p>
-<h1 align="center">
-  Gatsby Minimal Starter
-</h1>
+# With Docker Compose
 
-## 🚀 Quick start
+This example contains everything needed to get a Next.js development and production environment up and running with Docker Compose.
 
-1.  **Create a Gatsby site.**
+## Benefits of Docker Compose
 
-    Use the Gatsby CLI to create a new site, specifying the minimal starter.
+- Develop locally without Node.js or TypeScript installed ✨
+- Easy to run, consistent development environment across macOS, Windows, and Linux teams
+- Run multiple Next.js apps, databases, and other microservices in a single deployment
+- Multistage builds combined with [Output Standalone](https://nextjs.org/docs/advanced-features/output-file-tracing#automatically-copying-traced-files) outputs up to 85% smaller apps (Approximately 110 MB compared to 1 GB with create-next-app)
+- Easy configuration with YAML files
 
-    ```shell
-    # create a new Gatsby site using the minimal starter
-    npm init gatsby
-    ```
+## How to use
 
-2.  **Start developing.**
+Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
 
-    Navigate into your new site’s directory and start it up.
+```bash
+npx create-next-app --example with-docker-compose with-docker-compose-app
+```
 
-    ```shell
-    cd my-gatsby-site/
-    npm run develop
-    ```
+```bash
+yarn create next-app --example with-docker-compose with-docker-compose-app
+```
 
-3.  **Open the code and start customizing!**
+```bash
+pnpm create next-app --example with-docker-compose with-docker-compose-app
+```
 
-    Your site is now running at http://localhost:8000!
+Optionally, after the installation is complete:
 
-    Edit `src/pages/index.js` to see your site update in real-time!
+- Run `cd next-app`, then run `npm install` or `yarn install` or `pnpm install` to generate a lockfile.
 
-4.  **Learn more**
+It is recommended to commit a lockfile to version control. Although the example will work without one, build errors are more likely to occur when using the latest version of all dependencies. This way, we're always using a known good configuration to develop and run in production.
 
-    - [Documentation](https://www.gatsbyjs.com/docs/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-    - [Tutorials](https://www.gatsbyjs.com/docs/tutorial/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-    - [Guides](https://www.gatsbyjs.com/docs/how-to/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-    - [API Reference](https://www.gatsbyjs.com/docs/api-reference/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-    - [Plugin Library](https://www.gatsbyjs.com/plugins?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-    - [Cheat Sheet](https://www.gatsbyjs.com/docs/cheat-sheet/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
+## Prerequisites
 
-## 🚀 Quick start (Netlify)
+Install [Docker Desktop](https://docs.docker.com/get-docker) for Mac, Windows, or Linux. Docker Desktop includes Docker Compose as part of the installation.
 
-Deploy this starter with one click on [Netlify](https://app.netlify.com/signup):
+## Development
 
-[<img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" />](https://app.netlify.com/start/deploy?repository=https://github.com/gatsbyjs/gatsby-starter-minimal)
+First, run the development server:
+
+```bash
+# Create a network, which allows containers to communicate
+# with each other, by using their container name as a hostname
+docker network create my_network
+
+# Build dev
+docker compose -f compose.dev.yaml build
+
+# Up dev
+docker compose -f compose.dev.yaml up
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+
+## Production
+
+Multistage builds are highly recommended in production. Combined with the Next [Output Standalone](https://nextjs.org/docs/advanced-features/output-file-tracing#automatically-copying-traced-files) feature, only `node_modules` files required for production are copied into the final Docker image.
+
+First, run the production server (Final image approximately 110 MB).
+
+```bash
+# Create a network, which allows containers to communicate
+# with each other, by using their container name as a hostname
+docker network create my_network
+
+# Build prod
+docker compose -f compose.prod.yaml build
+
+# Up prod in detached mode
+docker compose -f compose.prod.yaml up -d
+```
+
+Alternatively, run the production server without multistage builds (Final image approximately 1 GB).
+
+```bash
+# Create a network, which allows containers to communicate
+# with each other, by using their container name as a hostname
+docker network create my_network
+
+# Build prod without multistage
+docker compose -f compose.prod-without-multistage.yaml build
+
+# Up prod without multistage in detached mode
+docker compose -f compose.prod-without-multistage.yaml up -d
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+## Useful commands
+
+```bash
+# Stop all running containers
+docker kill $(docker ps -aq) && docker rm $(docker ps -aq)
+
+# Free space
+docker system prune -af --volumes
+```

@@ -5,7 +5,7 @@ FROM node:18-alpine
 WORKDIR /app
 
 # Instala Gatsby CLI globalmente
-RUN npm install -g gatsby-cli
+RUN npm install next@latest react@latest react-dom@latest
 
 # Copia el archivo package.json para instalar dependencias
 COPY package.json ./
@@ -17,7 +17,11 @@ RUN npm install
 COPY . .
 
 # Expone el puerto en el que Gatsby servirá la aplicación (en modo desarrollo)
-EXPOSE 8000
+EXPOSE 3000
 
-# Comando para iniciar el servidor de desarrollo de Gatsby
-CMD ["gatsby", "develop", "-H", "0.0.0.0"]
+ENV PORT=3000
+
+# server.js is created by next build from the standalone output
+# https://nextjs.org/docs/pages/api-reference/config/next-config-js/output
+ENV HOSTNAME="0.0.0.0"
+CMD ["node", "server.js"]
