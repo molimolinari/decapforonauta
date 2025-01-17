@@ -21,6 +21,17 @@ export async function getPostData(id) {
   const processedContent = await remark().use(html).process(content);
   const contentHtml = processedContent.toString();
 
+
+export function getSortedPostsData() {
+  const fileNames = fs.readdirSync(postsDirectory);
+
+  const allPostsData = fileNames.map((fileName) => {
+    const id = fileName.replace(/\.md$/, ''); // Elimina la extensión .md
+    const fullPath = path.join(postsDirectory, fileName);
+    const fileContents = fs.readFileSync(fullPath, 'utf8');
+
+    const { data } = matter(fileContents); // Extrae los metadatos (frontmatter)
+
   return {
     id,
     contentHtml,
