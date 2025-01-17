@@ -6,6 +6,10 @@ WORKDIR /app
 
 # Install dependencies based on the preferred package manager
 COPY package.json ./
+
+# Instalar dependencias
+RUN npm install
+
 COPY src ./src
 COPY public ./public
 COPY next.config.js .
@@ -17,6 +21,6 @@ COPY tsconfig.json .
 
 # Note: Don't expose ports here, Compose will handle that for us
 
-# Start Next.js in development mode based on the preferred package manager
-CMD npm run dev
+# Comando por defecto para iniciar la aplicación
+CMD ["npm", "run", "dev"]
 
