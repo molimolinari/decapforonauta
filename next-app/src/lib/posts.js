@@ -21,6 +21,13 @@ export async function getPostData(id) {
   const processedContent = await remark().use(html).process(content);
   const contentHtml = processedContent.toString();
 
+  return {
+    id,
+    contentHtml,
+    ...data,
+  };
+}
+
 
 export function getSortedPostsData() {
   const fileNames = fs.readdirSync(postsDirectory);
@@ -32,9 +39,12 @@ export function getSortedPostsData() {
 
     const { data } = matter(fileContents); // Extrae los metadatos (frontmatter)
 
-  return {
-    id,
-    contentHtml,
-    ...data,
-  };
+    return {
+      id,
+      ...data, // Incluye los metadatos (por ejemplo, title, date)
+    };
+  });
+
+    // Ordena los posts por fecha (descendente)
+  return allPostsData.sort((a, b) => (a.date < b.date ? 1 : -1));
 }
