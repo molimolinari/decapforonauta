@@ -12,6 +12,7 @@ RUN npm install
 
 COPY src ./src
 COPY public ./public
+COPY content ./content
 COPY next.config.js .
 COPY tsconfig.json .
 
